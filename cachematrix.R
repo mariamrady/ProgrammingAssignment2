@@ -7,17 +7,17 @@ makeCacheMatrix <- function(x = matrix()) {
   #This function creates a special "matrix" object that can cache its inverse.
   #set values of a matrix
   #get values of a matrix
-  #set the transpose of a matrix
-  #get the transpose of a matrix
-  transpose<-NULL
+  #set the inverse of a matrix
+  #get the inverse of a matrix
+  inv<-NULL
   set<-function(y)
   {
     x<<-y
-    transpose<<-NULL
+    inv<<-NULL
   }
   get<-function() x
-  settranspose<-function(t) transpose<<-t
-  gettranspose<-function() transpose
+  settranspose<-function(inverse) inv<<-inverse
+  gettranspose<-function() inv
   list(set=set,get=get, settranspose=settranspose,gettranspose=gettranspose)
 
 }
@@ -30,13 +30,13 @@ cacheSolve <- function(x, ...) {
   #This function computes the inverse of the special "matrix" returned by makeCacheMatrix above. 
   #If the inverse has already been calculated (and the matrix has not changed),
   #then the cachesolve should retrieve the inverse from the cache.
-  transpose<-x$gettranspose()
-  if(!is.null(transpose)){
+  inv<-x$gettranspose()
+  if(!is.null(inv)){
     message("getting cached data")
-    return(transpose)
+    return(inv)
   }
   data<-x$get()
-  transpose<-t(data,...)
-  x$settranspose(transpose)
-  transpose
+  inv<-inverse(data,...)
+  x$settranspose(inv)
+  inv
 }
